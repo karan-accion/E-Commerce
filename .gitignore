@@ -1,5 +1,8 @@
 HELP.md
 ASSIGNMENT.md
+WEEK6_SETUP.md
+TESTING_GUIDE.md
+WEEK6_CHECKLIST.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
