@@ -1,17 +1,1 @@
-[
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440001",
-    "name": "Alice Johnson",
-    "email": "alice@example.com"
-  },
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440002",
-    "name": "Bob Smith",
-    "email": "bob@example.com"
-  },
-  {
-    "id": "550e8400-e29b-41d4-a716-446655440003",
-    "name": "Carol White",
-    "email": "carol@example.com"
-  }
-]
+[{"id":"550e8400-e29b-41d4-a716-446655440001","name":"Alice Johnson","email":"alice@example.com"},{"id":"550e8400-e29b-41d4-a716-446655440002","name":"Bob Smith","email":"bob@example.com"},{"id":"550e8400-e29b-41d4-a716-446655440003","name":"Carol White","email":"carol@example.com"},{"id":"26e060b0-e071-4e7b-b35b-6655504e534a","name":"John Doe","email":"johndoe@gmail.com"}]
