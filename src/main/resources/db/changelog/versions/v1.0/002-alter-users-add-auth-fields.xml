@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="v1.0-002-alter-users-add-auth-fields" author="admin" context="v1.0">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="password"/>
+            </not>
+        </preConditions>
+        <comment>Add password and role columns to users table for authentication</comment>
+
+        <addColumn tableName="users">
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="users">
+            <column name="role" type="VARCHAR(50)" defaultValue="USER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="users" columnName="password"/>
+            <dropColumn tableName="users" columnName="role"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

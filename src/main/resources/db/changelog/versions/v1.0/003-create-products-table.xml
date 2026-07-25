@@ -5,19 +5,25 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="v1.0-001-create-users-table" author="admin" context="v1.0" runOnChange="false">
-        <comment>Create users table for Week 6 JPA implementation</comment>
+    <changeSet id="v1.0-003-create-products-table" author="admin" context="v1.0">
+        <comment>Create products table for product management</comment>
 
-        <createTable tableName="users">
+        <createTable tableName="products">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true"/>
+            <column name="description" type="TEXT"/>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
             </column>
+            <column name="stock_quantity" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="VARCHAR(100)"/>
+            <column name="image_url" type="VARCHAR(500)"/>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
@@ -26,12 +32,12 @@
             </column>
         </createTable>
 
-        <createIndex indexName="idx_users_email" tableName="users">
-            <column name="email"/>
+        <createIndex indexName="idx_products_category" tableName="products">
+            <column name="category"/>
         </createIndex>
 
         <rollback>
-            <dropTable tableName="users"/>
+            <dropTable tableName="products"/>
         </rollback>
     </changeSet>
 

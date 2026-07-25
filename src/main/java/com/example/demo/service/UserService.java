@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UserResponse;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -8,39 +10,48 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserResponse::new)
+                .toList();
     }
 
-    public User createUser(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
-            throw new IllegalArgumentException("Name is required");
+    public UserResponse getUserById(Long id) {
+        return new UserResponse(findUserById(id));
+    }
+
+    public UserResponse updateUser(Long id, User updatedUser) {
+        User existing = findUserById(id);
+
+        if (updatedUser.getName() != null && !updatedUser.getName().isBlank()) {
+            existing.setName(updatedUser.getName());
         }
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new IllegalArgumentException("Email is required");
+        if (updatedUser.getEmail() != null && !updatedUser.getEmail().isBlank()) {
+            existing.setEmail(updatedUser.getEmail());
         }
-        return userRepository.save(user);
-    }
+        if (updatedUser.getRole() != null) {
+            existing.setRole(updatedUser.getRole());
+        }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
-    }
-
-    public User updateUser(Long id, User updatedUser) {
-        User existing = getUserById(id);
-        existing.setName(updatedUser.getName());
-        existing.setEmail(updatedUser.getEmail());
-        return userRepository.save(existing);
+        return new UserResponse(userRepository.save(existing));
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        }
         userRepository.deleteById(id);
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 }

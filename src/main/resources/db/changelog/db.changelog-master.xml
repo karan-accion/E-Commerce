@@ -6,5 +6,9 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
     <include file="versions/v1.0/001-create-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="versions/v1.0/002-alter-users-add-auth-fields.xml" relativeToChangelogFile="true"/>
+    <include file="versions/v1.0/003-create-products-table.xml" relativeToChangelogFile="true"/>
+    <include file="versions/v1.0/004-create-orders-tables.xml" relativeToChangelogFile="true"/>
+    <include file="versions/v1.0/005-create-cart-tables.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
