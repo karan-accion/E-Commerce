@@ -1,0 +1,7 @@
+body { font-family: Arial, Helvetica, sans-serif; padding: 20px; }
+.app nav { margin-bottom: 16px }
+button { margin-right: 8px }
+.card { margin: 12px 0; padding: 12px; border: 1px solid #ddd; display: inline-block }
+label { display: block; margin-bottom: 8px }
+input { margin-left: 8px }
+.message { margin: 8px 0; color: #b00 }

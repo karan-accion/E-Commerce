@@ -1,11 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UserResponse;
-import com.example.demo.model.User;
-import com.example.demo.service.UserService;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.UserResponse;
+import com.example.demo.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -28,8 +37,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserResponse updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public UserResponse updateUser(@PathVariable Long id, @Valid @RequestBody com.example.demo.dto.UpdateUserRequest request) {
+        return userService.updateUser(id, request);
     }
 
     @DeleteMapping("/{id}")

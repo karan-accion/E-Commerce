@@ -1,20 +1,24 @@
 package com.example.demo.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.example.demo.enums.Role;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtService;
+import com.example.demo.security.UserPrincipal;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -26,28 +30,24 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private String adminToken;
+        private String adminToken;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        String registerBody = """
-                {
-                  "name": "Admin User",
-                  "email": "admin@test.com",
-                  "password": "password123",
-                  "role": "ADMIN"
-                }
-                """;
+        @Autowired
+        private UserRepository userRepository;
 
-        MvcResult result = mockMvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerBody))
-                .andExpect(status().isCreated())
-                .andReturn();
+        @Autowired
+        private JwtService jwtService;
 
-        JsonNode response = objectMapper.readTree(result.getResponse().getContentAsString());
-        adminToken = "Bearer " + response.get("token").asText();
-    }
+        @Autowired
+        private PasswordEncoder passwordEncoder;
+
+        @BeforeEach
+        void setUp() throws Exception {
+                // create admin user directly in repository and generate token
+                User admin = new User("Admin User", "admin@test.com", passwordEncoder.encode("password123"), Role.ADMIN);
+                admin = userRepository.save(admin);
+                adminToken = "Bearer " + jwtService.generateToken(new UserPrincipal(admin));
+        }
 
     @Test
     void shouldRegisterAndLoginUser() throws Exception {

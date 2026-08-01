@@ -1,11 +1,23 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+
 @Entity
 @Table(name = "products")
+@DynamicUpdate
 public class Product {
 
     @Id
@@ -23,6 +35,9 @@ public class Product {
 
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity = 0;
+
+    @Version
+    private Integer version;
 
     private String category;
 
